@@ -41,6 +41,8 @@ class SinapsResearchPlatformH5RecordingExtractor(BaseRecording):
         self.set_channel_gains(sinaps_info["gain"])
         self.set_channel_offsets(sinaps_info["offset"])
 
+        self.set_channel_locations(sinaps_info["channel_locations"])
+
         # set other properties
 
         self._kwargs = {"file_path": str(Path(file_path).absolute())}
@@ -98,6 +100,8 @@ def openSiNAPSFile(filename):
 
     samplingRate = parameters.get('SamplingFrequency')[0]
 
+    channel_locations = np.array(parameters.get("PositionElectrodes")).T
+
     sinaps_info = {
         "filehandle": rf,
         "num_frames": nFrames,
@@ -106,6 +110,7 @@ def openSiNAPSFile(filename):
         "channel_ids": np.arange(nRecCh),
         "gain": gain,
         "offset": offset,
+        "channel_locations": channel_locations,
         "dtype": dtype,
     }
 
